@@ -1,3 +1,7 @@
+from csv import DictReader
+from pathlib import Path
+
+
 class Item:
     """
     Класс для представления товара в магазине.
@@ -13,7 +17,7 @@ class Item:
         :param price: Цена за единицу товара.
         :param quantity: Количество товара в магазине.
         """
-        self.name = name
+        self.__name = name
         self.price = price
         self.quantity = quantity
         Item.all.append(self)
@@ -31,3 +35,34 @@ class Item:
         Применяет установленную скидку для конкретного товара.
         """
         self.price = round(self.price * Item.pay_rate, 2)
+
+    @property
+    def name(self):
+        return self.__name
+
+    @name.setter
+    def name(self, value):
+        if len(value) > 10:
+            self.__name = value[:10]
+        else:
+            self.__name = value
+
+    @classmethod
+    def instantiate_from_csv(cls, file_path: str) -> None:
+        """Инициализирует экземпляры класса Item по данным из CSV-файла."""
+        Item.all = []
+        file_path = Path(__file__).parent.parent / file_path
+        with open(file_path) as file:
+            data = DictReader(file)
+            for row in data:
+                name = row['name']
+                price = float(row['price'])
+                quantity = Item.string_to_number(row['quantity'])
+                cls(name, price, quantity)
+
+    @staticmethod
+    def string_to_number(value: str) -> int:
+        """
+        Преобразует строку в число округляя до целой части.
+        """
+        return int(float(value) // 1)
