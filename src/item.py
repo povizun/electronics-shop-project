@@ -28,6 +28,11 @@ class Item:
     def __str__(self):
         return self.__name
 
+    def __add__(self, other):
+        if isinstance(other, Item):
+            return self.quantity + other.quantity
+        raise Exception(ValueError, "Складывать можно только объекты Item и дочерние от них")
+
     def calculate_total_price(self) -> float:
         """
         Рассчитывает общую стоимость конкретного товара в магазине.
