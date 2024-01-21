@@ -16,6 +16,14 @@ def test_str(test_phone):
     assert str(test_phone) == 'test'
 
 
+def test_apply_discount(test_phone):
+    test_phone.apply_discount()
+    assert test_phone.price == 89.9
+    Phone.pay_rate = 0.9
+    test_phone.apply_discount()
+    assert test_phone.price == 80.91
+
+
 def test_number_of_sim(test_phone):
     assert test_phone.number_of_sim == 1
     test_phone.number_of_sim = 2

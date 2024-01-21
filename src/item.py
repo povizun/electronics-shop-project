@@ -17,6 +17,7 @@ class Item:
         :param price: Цена за единицу товара.
         :param quantity: Количество товара в магазине.
         """
+        super().__init__()
         self.__name = name
         self.price = price
         self.quantity = quantity
@@ -45,7 +46,7 @@ class Item:
         """
         Применяет установленную скидку для конкретного товара.
         """
-        self.price = round(self.price * Item.pay_rate, 2)
+        self.price = round(self.price * self.__class__.pay_rate, 2)
 
     @property
     def name(self):
