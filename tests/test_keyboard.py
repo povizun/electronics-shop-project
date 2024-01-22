@@ -8,6 +8,11 @@ def test_kb():
     return Keyboard("test", 89.90, 20)
 
 
+@pytest.fixture(autouse=True, scope='module')
+def reset_item_pay_rate():
+    Keyboard.pay_rate = 1
+
+
 def test_calculate_total_price(test_kb):
     assert test_kb.calculate_total_price() == 1798.0
 

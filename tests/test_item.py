@@ -9,6 +9,11 @@ def test_item():
     return Item("test", 89.90, 20)
 
 
+@pytest.fixture(autouse=True, scope='module')
+def reset_item_pay_rate():
+    Item.pay_rate = 1
+
+
 def test_calculate_total_price(test_item):
     assert test_item.calculate_total_price() == 1798.0
 

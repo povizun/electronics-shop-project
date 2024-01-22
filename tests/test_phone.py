@@ -8,6 +8,11 @@ def test_phone():
     return Phone("test", 89.90, 20, 1)
 
 
+@pytest.fixture(autouse=True, scope='module')
+def reset_item_pay_rate():
+    Phone.pay_rate = 1
+
+
 def test_repr(test_phone):
     assert repr(test_phone) == "Phone('test', 89.9, 20, 1)"
 
