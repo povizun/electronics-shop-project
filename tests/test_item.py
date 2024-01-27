@@ -1,7 +1,7 @@
 """Здесь надо написать тесты с использованием pytest для модуля item."""
 import pytest
 
-from src.item import Item
+from src.item import Item, InstantiateCSVError
 
 
 @pytest.fixture
@@ -40,6 +40,16 @@ def test_instantiate_from_csv():
     assert Item.all[4].name == "Клавиатура"
     assert Item.all[0].price == 100
     assert Item.all[0].quantity == 1
+
+
+def test_file_not_found():
+    with pytest.raises(FileNotFoundError):
+        Item.instantiate_from_csv("src/items2.csv")
+
+
+def test_instantiate_csv():
+    with pytest.raises(InstantiateCSVError):
+        Item.instantiate_from_csv("src/items1.csv")
 
 
 def test_string_to_number():
