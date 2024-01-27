@@ -2,6 +2,10 @@ from csv import DictReader
 from pathlib import Path
 
 
+class InstantiateCSVError(Exception):
+    pass
+
+
 class Item:
     """
     Класс для представления товара в магазине.
@@ -64,13 +68,18 @@ class Item:
         """Инициализирует экземпляры класса Item по данным из CSV-файла."""
         Item.all = []
         file_path = Path(__file__).parent.parent / file_path
-        with open(file_path) as file:
-            data = DictReader(file)
-            for row in data:
-                name = row['name']
-                price = float(row['price'])
-                quantity = Item.string_to_number(row['quantity'])
-                cls(name, price, quantity)
+        try:
+            with open(file_path) as file:
+                data = DictReader(file)
+                for row in data:
+                    name = row['name']
+                    price = float(row['price'])
+                    quantity = Item.string_to_number(row['quantity'])
+                    cls(name, price, quantity)
+        except FileNotFoundError:
+            raise FileNotFoundError("Отсутствует файл item.csv")
+        except KeyError:
+            raise InstantiateCSVError("Файл item.csv поврежден")
 
     @staticmethod
     def string_to_number(value: str) -> int:
